@@ -1,5 +1,6 @@
 const puppeter = require('puppeteer');
 const saveImage = require('../helper/saveImages.js');
+const fs = require('fs')
 
 // 任务:在百度搜索输入的关键字，然后下载图片
 async function downLoadImages(conf) {
@@ -38,11 +39,14 @@ async function downLoadImages(conf) {
                 return image.src; 
             })
         })
+        if(!fs.existsSync(conf.output)){
+            fs.mkdirSync(conf.output)
+        }
         srcs.forEach(async (src) => {
             // 防止频繁去访问，从而触发反爬虫规则
             // await page.waitFor(500)
             // 保存图片
-            await saveImage(src)
+            await saveImage(src,conf.output)
         });
         await browser.close()
     })
