@@ -19,9 +19,9 @@ function urlToImage(src,dir) {
     // 判断是否为https
     const mod = /^https/.test(src) ? https : http
     // 获取图片的格式
-    const ext = path.extname(src)
+    const ext = path.extname(src)  
     // 拼接路径
-    const file = path.join(dir, `${Date.now()}.${ext}`)
+    const file = path.join(dir, `${Date.now()}${ext}`)
     // 发送请求
     mod.get(src, (res) => {
         // 保存图片到本地
@@ -32,16 +32,13 @@ function urlToImage(src,dir) {
 }
 
 async function base64ToImage(src,dir) {
-    console.log(src);
-    
-    // base64格式:data:image/jpeg;base64,/retetedfg
+      // base64格式:data:image/jpeg;base64,/retetedfg
     const matchs = src.match(/^data:(.+?);base64,(.+)$/)
-
     try {
         // matchs[1]-->image/jpeg
         const ext = matchs[1].split('/')[1]
 
-        const file = path.join(dir, `${Date.now()}.${ext}`)
+        const file = path.join(dir, `${Date.now()}${ext}`)
         // matchs[2]-->/retetedfg
         await writeFile(file, matchs[2], 'base64')
         console.log(src + '下载完成')
